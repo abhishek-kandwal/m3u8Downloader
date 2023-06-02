@@ -3,6 +3,7 @@ import { m3u8FileDownloader } from "./src/m3u8FileDownloader.js";
 import { m3u8Downloader } from "./src/m3u8Downloader.js";
 import { m3u8FileToArray } from './src/m3u8FileToArray.js';
 import { cleanM3u8Data } from "./src/cleanM3u8Data.js";
+import { saveVideoToLocal } from "./src/saveToLocal.js";
 
 const main = async (url) => {
   try {

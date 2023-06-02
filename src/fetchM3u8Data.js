@@ -8,8 +8,7 @@ export const fetchM3u8Data = (input) => {
         fetchM3u8DataRecursive = () => {
             const { videoChunkUrl, endPoint, index, currentIndex, totalParts } = input;
             return new Promise((res, rej) => {
-                setTimeout(() => {
-                    https.get(videoChunkUrl, videoResponse => {
+                    const request = https.get(videoChunkUrl, videoResponse => {
                         let videoData = Buffer.alloc(0);
         
                         videoResponse.on('data', videoChunk => {
@@ -18,8 +17,8 @@ export const fetchM3u8Data = (input) => {
         
                         videoResponse.on('end', () => {
                             totalParts.value -= 1;
-                            console.log('completed', currentIndex, 'remaining :-', totalParts.value);
-                            saveVideoToLocal([videoData], `video${index}.mp4`);
+                            console.log('remaining :-', totalParts.value);
+                            // saveVideoToLocal([videoData], `video${index}.mp4`);
                             return res(videoData);
                         });
         
@@ -34,7 +33,8 @@ export const fetchM3u8Data = (input) => {
                             return rej('error');
                         });
                     });
-                }, currentIndex);
+
+                    request.on('error', e => console.log("emit error", e));
             });
         }
     
