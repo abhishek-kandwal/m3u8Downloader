@@ -1,0 +1,22 @@
+{
+  "name": "m3u8-downloader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "dependencies": {
+    "data-uri-to-buffer": "^4.0.1",
+    "fetch-blob": "^3.2.0",
+    "node-domexception": "^1.0.0",
+    "formdata-polyfill": "^4.0.10",
+    "node-fetch": "^3.3.1",
+    "web-streams-polyfill": "^3.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
