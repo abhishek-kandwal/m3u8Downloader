@@ -1,12 +1,11 @@
 import https from 'https';
-import { saveVideoToLocal } from './saveToLocal.js';
 
 export const fetchM3u8Data = (input) => {
     let fetchM3u8DataRecursive;
     try {
         let recursiveCounter = 0;
         fetchM3u8DataRecursive = () => {
-            const { videoChunkUrl, endPoint, index, currentIndex, totalParts } = input;
+            const { videoChunkUrl, totalParts } = input;
             return new Promise((res, rej) => {
                     const request = https.get(videoChunkUrl, videoResponse => {
                         let videoData = Buffer.alloc(0);
@@ -18,23 +17,22 @@ export const fetchM3u8Data = (input) => {
                         videoResponse.on('end', () => {
                             totalParts.value -= 1;
                             console.log('remaining :-', totalParts.value);
-                            // saveVideoToLocal([videoData], `video${index}.mp4`);
                             return res(videoData);
                         });
         
                         videoResponse.on('error', () => {
                             if (recursiveCounter < 2) {
-                                console.log('retrying...', endPoint, currentIndex )
+                                console.log('retrying...');
                                 recursiveCounter++;
                                 return fetchM3u8DataRecursive();
                             }
     
-                            console.log('rejected', endPoint, currentIndex);
+                            console.log('rejected');
                             return rej('error');
                         });
                     });
 
-                    request.on('error', e => console.log("emit error", e));
+                    request.on('error', e => console.log("req error", e));
             });
         }
     

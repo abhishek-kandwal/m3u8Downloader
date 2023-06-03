@@ -1,9 +1,11 @@
 import { urlSeperator } from "./src/urlSeperator.js";
 import { m3u8FileDownloader } from "./src/m3u8FileDownloader.js";
-import { m3u8Downloader } from "./src/m3u8Downloader.js";
 import { m3u8FileToArray } from './src/m3u8FileToArray.js';
 import { cleanM3u8Data } from "./src/cleanM3u8Data.js";
 import { saveVideoToLocal } from "./src/saveToLocal.js";
+import { joinM3u8Urls } from "./src/joinM3u8Urls.js";
+import { createDownloaderBatch } from "./src/createDownloaderBatch.js";
+import { batchDownloader } from "./src/batchDownloader.js";
 
 const main = async (url) => {
   try {
@@ -11,10 +13,13 @@ const main = async (url) => {
       const m3u8Data = await m3u8FileDownloader(initialUrl);
       const seperatedData = m3u8FileToArray(m3u8Data);
       const cleanEndPointSet = cleanM3u8Data(seperatedData);
-      const videoChunks = await m3u8Downloader(accessUrl, cleanEndPointSet);
-      // saveVideoToLocal(videoChunks);
+      const urlList = joinM3u8Urls(cleanEndPointSet, accessUrl);
+      const batchListData = createDownloaderBatch(urlList);
+      const downloadedBatch = await batchDownloader(batchListData);
+      console.log("please wait...");
+      saveVideoToLocal(downloadedBatch);
   } catch (err) {
-      console.log('ex -', err);
+      console.log('main error', err);
   }
 };
 
